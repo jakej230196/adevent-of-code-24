@@ -63,6 +63,36 @@ func calculateAbsDistanceVec(x,y []int) ([]int,int) {
 	
 }
 
+func ListToOccurenceMap(x []int) map[int]int{
+	occurenceMap := make(map[int]int)
+	for i := 0; i < len(x); i++ {
+		val, exists := occurenceMap[x[i]]
+		if !exists {
+			occurenceMap[x[i]] = 1
+		} else {
+			occurenceMap[x[i]] = val + 1
+		}
+	}
+	return occurenceMap
+}
+
+func CalculateListSimilarity(left,right []int) int {
+	rightOC := ListToOccurenceMap(right)
+	similarityScore := 0
+	for i := 0; i < len(left) ; i++ {
+		mul, exists := rightOC[left[i]]
+		if !exists {
+			continue
+		} else {
+			similarityScore = similarityScore + left[i] * mul
+		}
+	
+	}
+	return similarityScore
+	
+}
+
+
 func main() {
 	filePath := flag.String("filePath", "./input.txt","yeet")
 	flag.Parse()
@@ -74,11 +104,11 @@ func main() {
 	slices.Sort(leftList)
 	slices.Sort(rightList)
 	
-	distVec,sum := calculateAbsDistanceVec(leftList,rightList)
-	
-	fmt.Println(distVec)
+	_,sum := calculateAbsDistanceVec(leftList,rightList)
 	fmt.Println(sum)
-
+	// end p1
+	
+	fmt.Println(CalculateListSimilarity(leftList,rightList))
 }
 
 
